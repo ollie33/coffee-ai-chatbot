@@ -32,8 +32,26 @@ export default function ChatWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const [isHandoff, setIsHandoff] = useState(false);
   const [queuePos] = useState(Math.floor(Math.random() * 3) + 1);
+  const [now, setNow] = useState(new Date());
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // 更新時鐘
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // 判斷是否在服務時間內（工作日 12:00–20:00）
+  const isWithinServiceHours = (() => {
+    const day = now.getDay(); // 0=Sun, 6=Sat
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const totalMinutes = hour * 60 + minute;
+    return day >= 1 && day <= 5 && totalMinutes >= 12 * 60 && totalMinutes < 20 * 60;
+  })();
+
+  const timeStr = now.toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit", hour12: false });
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -115,30 +133,45 @@ export default function ChatWidget() {
             <div className="flex items-center gap-2">
               <Bot className="w-5 h-5" />
               <div>
-                <h3 className="font-semibold text-sm">智能咖啡顧問</h3>
-                <p className="text-xs text-neutral-400">{isHandoff ? "等待轉接中..." : "目前在線為您服務"}</p>
+                <h3 className="font-semibold text-sm">智能客服-咖比</h3>
+                <p className="text-xs text-neutral-400">
+                  {isHandoff ? "等待轉接中..." : isWithinServiceHours ? "目前在線為您服務" : "目前非服務時間"}
+                </p>
               </div>
             </div>
-            {!isHandoff && (
-              <button
-                onClick={handleHandoff}
-                className="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full flex items-center gap-1 transition-colors"
-              >
-                <Headphones className="w-3 h-3" />
-                轉接專人
-              </button>
-            )}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-neutral-500">{timeStr}</span>
+              {!isHandoff && (
+                isWithinServiceHours ? (
+                  <button
+                    onClick={handleHandoff}
+                    className="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full flex items-center gap-1 transition-colors"
+                  >
+                    <Headphones className="w-3 h-3" />
+                    轉接專人
+                  </button>
+                ) : (
+                  <div className="text-xs bg-white/10 px-3 py-1.5 rounded-full flex items-center gap-1 text-neutral-500 cursor-not-allowed" title="服務時間：工作日 12:00–20:00">
+                    <Headphones className="w-3 h-3" />
+                    非服務時間
+                  </div>
+                )
+              )}
+            </div>
           </div>
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto px-5 py-5 space-y-6 bg-neutral-50/50">
             {messages.map((m) => (
               <div key={m.id} className="flex flex-col gap-3">
-                {/* 氣泡 */}
+                {/* AI 氣泡 附帶昵稱 */}
                 <div className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                   {m.role === "assistant" && (
-                    <div className="w-7 h-7 rounded-full bg-black flex items-center justify-center shrink-0">
-                      <Bot className="w-3.5 h-3.5 text-white" />
+                    <div className="flex flex-col items-center gap-1 shrink-0">
+                      <div className="w-7 h-7 rounded-full bg-black flex items-center justify-center">
+                        <Bot className="w-3.5 h-3.5 text-white" />
+                      </div>
+                      <span className="text-[10px] text-neutral-400 whitespace-nowrap">咖比</span>
                     </div>
                   )}
                   <div className={`max-w-[85%] rounded-2xl px-5 py-4 text-sm whitespace-pre-line leading-relaxed ${
@@ -215,8 +248,8 @@ export default function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* 快速提問 */}
-          {messages.length === 1 && !isHandoff && (
+          {/* 快速提問 — 最後一則為 AI 回覆時持續顯示 */}
+          {!isHandoff && !isLoading && messages.length > 0 && messages[messages.length - 1].role === "assistant" && (
             <div className="px-5 pb-4 pt-3 bg-neutral-50/50 border-t border-neutral-100 shrink-0">
               <p className="text-xs text-neutral-400 mb-2">可以試著問我：</p>
               <div className="flex flex-wrap gap-2">
