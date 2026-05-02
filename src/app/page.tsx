@@ -62,47 +62,6 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-neutral-50 to-transparent" />
       </div>
 
-      {/* ── Features ── */}
-      <div className="py-32 px-12 md:px-20 bg-neutral-50">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            { icon: "🎯", title: "智慧推薦", desc: "根據需求精準配對最適合的咖啡機" },
-            { icon: "⚡", title: "即時解答", desc: "常見問題即時回覆，5 秒內給你答案" },
-            { icon: "👤", title: "真人轉接", desc: "複雜問題一鍵轉接專業客服人員" },
-          ].map((f) => (
-            <div
-              key={f.title}
-              className="bg-white border border-neutral-200 rounded-3xl p-10 hover:shadow-lg transition-shadow flex flex-col items-center text-center"
-            >
-              <div className="text-5xl mb-6">{f.icon}</div>
-              <h3 className="font-semibold text-2xl text-neutral-900 mb-3">{f.title}</h3>
-              <p className="text-lg text-neutral-500 leading-relaxed">{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Demo hint card ── */}
-      <div className="pb-32 px-12 md:px-20">
-        <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <div className="bg-white border border-neutral-200 rounded-3xl p-12 shadow-sm w-full text-center">
-            <h2 className="font-semibold text-2xl text-neutral-900 mb-8">您可以嘗試輸入：</h2>
-            <ul className="text-xl text-neutral-600 space-y-5 flex flex-col items-start inline-block text-left max-w-max mx-auto">
-              {[
-                "「請問你們有賣什麼咖啡機？」",
-                "「我想找半自動的咖啡機」",
-                "「咖啡機保固期多久？」",
-                "「我要轉接真人客服」",
-              ].map((q) => (
-                <li key={q} className="flex items-center gap-4">
-                  <span className="w-2.5 h-2.5 rounded-full bg-neutral-400 shrink-0" />
-                  {q}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
 
       {/* ── Chat Widget ── */}
       <ChatWidget />

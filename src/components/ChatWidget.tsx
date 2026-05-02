@@ -143,15 +143,15 @@ export default function ChatWidget() {
       {/* ── Floating Button ── */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 p-4 bg-black text-white rounded-full shadow-2xl hover:bg-neutral-800 transition-all duration-200 flex items-center justify-center group"
+        className="fixed bottom-6 right-6 z-50 p-8 bg-black text-white rounded-full shadow-2xl hover:bg-neutral-800 transition-all duration-200 flex items-center justify-center group"
       >
         {isOpen ? (
-          <X className="w-6 h-6" />
+          <X className="w-12 h-12" />
         ) : (
-          <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
+          <MessageCircle className="w-12 h-12 group-hover:scale-110 transition-transform" />
         )}
         {!isOpen && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold">
+          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center font-bold">
             1
           </span>
         )}
@@ -162,8 +162,8 @@ export default function ChatWidget() {
         <div className="fixed bottom-24 right-6 w-[380px] h-[600px] bg-white rounded-2xl shadow-2xl border border-neutral-100 flex flex-col z-50 overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-200">
 
           {/* Header */}
-          <div className="bg-black text-white p-4 flex justify-between items-center shrink-0">
-            <div className="flex items-center gap-2">
+          <div className="bg-black text-white p-6 flex justify-between items-center shrink-0">
+            <div className="flex items-center gap-3">
               <Bot className="w-5 h-5" />
               <div>
                 <h3 className="font-semibold text-sm">智能咖啡顧問</h3>
@@ -184,7 +184,7 @@ export default function ChatWidget() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-6 bg-neutral-50/50">
+          <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 bg-neutral-50/50">
 
             {messages.map((msg) => (
               <div key={msg.id} className="flex flex-col gap-1.5">
@@ -276,16 +276,16 @@ export default function ChatWidget() {
             <div ref={bottomRef} />
           </div>
 
-          {/* Quick Questions — only on first message */}
-          {messages.length === 1 && !handedOff && (
-            <div className="px-4 pb-2 bg-neutral-50/50 border-t border-neutral-100">
-              <p className="text-[11px] text-neutral-400 mt-2 mb-1.5">可以試著問我：</p>
-              <div className="flex flex-wrap gap-1.5">
+          {/* Quick Questions — show after every AI reply, or when only welcome msg exists */}
+          {!handedOff && !loading && messages.length > 0 && messages[messages.length - 1].role === "assistant" && (
+            <div className="px-6 pb-3 bg-neutral-50/50 border-t border-neutral-100">
+              <p className="text-[11px] text-neutral-400 mt-3 mb-2">可以試著問我：</p>
+              <div className="flex flex-wrap gap-2">
                 {QUICK_QUESTIONS.map((q) => (
                   <button
                     key={q}
                     onClick={() => sendMessage(q)}
-                    className="text-xs px-2.5 py-1 bg-white border border-neutral-200 text-neutral-700 rounded-full hover:bg-neutral-50 hover:border-neutral-300 transition-colors"
+                    className="text-xs px-3 py-1.5 bg-white border border-neutral-200 text-neutral-700 rounded-full hover:bg-neutral-50 hover:border-neutral-300 transition-colors"
                   >
                     {q}
                   </button>
@@ -295,7 +295,7 @@ export default function ChatWidget() {
           )}
 
           {/* Input */}
-          <div className="p-4 bg-white border-t border-neutral-100 shrink-0">
+          <div className="px-6 py-5 bg-white border-t border-neutral-100 shrink-0">
             {handedOff ? (
               <p className="text-xs text-center text-neutral-400 py-1">
                 AI 對話已暫停，等待客服接手中...
