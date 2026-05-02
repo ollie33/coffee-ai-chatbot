@@ -56,6 +56,7 @@ export default function ChatWidget() {
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || loading || handedOff) return;
+    setInput(""); // clear immediately before any async work
     const userMsg: Message = {
       id: Date.now().toString(),
       role: "user",
@@ -63,7 +64,6 @@ export default function ChatWidget() {
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, userMsg]);
-    setInput("");
     setLoading(true);
 
     try {
@@ -200,13 +200,17 @@ export default function ChatWidget() {
                   )}
 
                   <div
-                    className={`max-w-[80%] rounded-2xl p-3 text-sm leading-relaxed whitespace-pre-line ${
+                    className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                       msg.role === "user"
                         ? "bg-black text-white rounded-br-none"
                         : "bg-white border border-neutral-200 text-neutral-800 rounded-bl-none shadow-sm"
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === "user" ? (
+                      <span className="whitespace-pre-line">{msg.content}</span>
+                    ) : (
+                      <MarkdownMessage content={msg.content} />
+                    )}
                   </div>
 
                   {msg.role === "user" && (
@@ -391,4 +395,83 @@ function ProductCard({ product }: { product: (typeof products)[0] }) {
       </div>
     </div>
   );
+}
+
+/* ── Markdown Message Renderer ── */
+function renderInline(text: string): React.ReactNode[] {
+  // Split on **bold** tokens
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
+function MarkdownMessage({ content }: { content: string }) {
+  const lines = content.split("\n");
+  const nodes: React.ReactNode[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Numbered list item: "1. text"
+    if (/^\d+\.\s/.test(line)) {
+      const items: React.ReactNode[] = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        const text = lines[i].replace(/^\d+\.\s+/, "");
+        items.push(
+          <li key={i} className="ml-1">
+            {renderInline(text)}
+          </li>
+        );
+        i++;
+      }
+      nodes.push(
+        <ol key={`ol-${i}`} className="list-decimal pl-5 space-y-1 my-1">
+          {items}
+        </ol>
+      );
+      continue;
+    }
+
+    // Bullet list item: "- text" or "* text"
+    if (/^[-*]\s/.test(line)) {
+      const items: React.ReactNode[] = [];
+      while (i < lines.length && /^[-*]\s/.test(lines[i])) {
+        const text = lines[i].replace(/^[-*]\s+/, "");
+        items.push(
+          <li key={i} className="ml-1">
+            {renderInline(text)}
+          </li>
+        );
+        i++;
+      }
+      nodes.push(
+        <ul key={`ul-${i}`} className="list-disc pl-5 space-y-1 my-1">
+          {items}
+        </ul>
+      );
+      continue;
+    }
+
+    // Empty line → small gap
+    if (line.trim() === "") {
+      nodes.push(<div key={`gap-${i}`} className="h-1" />);
+      i++;
+      continue;
+    }
+
+    // Regular paragraph
+    nodes.push(
+      <p key={`p-${i}`} className="leading-relaxed">
+        {renderInline(line)}
+      </p>
+    );
+    i++;
+  }
+
+  return <div className="space-y-1">{nodes}</div>;
 }
