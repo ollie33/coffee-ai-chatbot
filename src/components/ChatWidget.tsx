@@ -156,7 +156,7 @@ export default function ChatWidget() {
       {/* 懸浮按鈕 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 p-4 bg-black text-white rounded-full shadow-2xl hover:bg-neutral-800 transition-all z-50 flex items-center justify-center group"
+        className="fixed bottom-6 right-6 p-4 bg-amber-950 text-white rounded-full shadow-2xl hover:bg-amber-900 transition-all z-50 flex items-center justify-center group"
       >
         {isOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />}
       </button>
@@ -166,7 +166,7 @@ export default function ChatWidget() {
         <div className="fixed bottom-24 right-6 w-[380px] h-[600px] bg-white rounded-2xl shadow-2xl border border-neutral-100 flex flex-col z-50 overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
 
           {/* Header */}
-          <div className="bg-black text-white p-4 flex justify-between items-center shrink-0">
+          <div className="bg-amber-950 text-white p-4 flex justify-between items-center shrink-0">
             <div className="flex items-center gap-2">
               <Bot className="w-5 h-5" />
               <div>
@@ -187,7 +187,7 @@ export default function ChatWidget() {
                 <div className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                   {m.role === "assistant" && (
                     <div className="flex flex-col items-center gap-1 shrink-0">
-                      <div className="w-7 h-7 rounded-full bg-black flex items-center justify-center">
+                      <div className="w-7 h-7 rounded-full bg-amber-950 flex items-center justify-center">
                         <Bot className="w-3.5 h-3.5 text-white" />
                       </div>
                       <span className="text-[10px] text-neutral-400 whitespace-nowrap">咖比</span>
@@ -195,7 +195,7 @@ export default function ChatWidget() {
                   )}
                   <div className={`max-w-[85%] rounded-2xl px-5 py-4 text-sm leading-relaxed ${
                     m.role === "user"
-                      ? "bg-black text-white rounded-br-none whitespace-pre-line"
+                      ? "bg-amber-950 text-white rounded-br-none whitespace-pre-line"
                       : "bg-white border border-neutral-200 text-neutral-800 rounded-bl-none shadow-sm"
                   }`}>
                     {m.role === "user" ? m.content : <MarkdownMessage content={m.content} />}
@@ -224,7 +224,7 @@ export default function ChatWidget() {
             {/* Loading */}
             {isLoading && (
               <div className="flex items-end gap-2 justify-start">
-                <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center shrink-0">
+                <div className="w-6 h-6 rounded-full bg-amber-950 flex items-center justify-center shrink-0">
                   <Bot className="w-3 h-3 text-white" />
                 </div>
                 <div className="bg-white border border-neutral-200 rounded-2xl rounded-bl-none px-5 py-4 shadow-sm flex gap-1.5 items-center">
@@ -291,7 +291,7 @@ export default function ChatWidget() {
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white bg-black rounded-full hover:bg-neutral-800 disabled:bg-neutral-300 disabled:cursor-not-allowed transition-colors"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white bg-amber-950 rounded-full hover:bg-amber-900 disabled:bg-neutral-300 disabled:cursor-not-allowed transition-colors"
                 >
                   <Send className="w-4 h-4" />
                 </button>
@@ -314,7 +314,7 @@ function ProductCard({ product }: { product: (typeof products)[0] }) {
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="text-[10px] bg-black text-white px-1.5 py-0.5 rounded-full font-medium">{product.badge}</span>
+              <span className="text-[10px] bg-amber-950 text-white px-1.5 py-0.5 rounded-full font-medium">{product.badge}</span>
               <span className="text-[10px] text-neutral-400">{product.category}</span>
             </div>
             <p className="font-semibold text-sm text-neutral-900 truncate">{product.name}</p>
@@ -334,7 +334,7 @@ function ProductCard({ product }: { product: (typeof products)[0] }) {
           href={product.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="block w-full text-center text-xs font-medium bg-black text-white py-2 rounded-lg hover:bg-neutral-800 transition-colors"
+          className="block w-full text-center text-xs font-medium bg-amber-950 text-white py-2 rounded-lg hover:bg-amber-900 transition-colors"
         >
           前往購買 →
         </a>
