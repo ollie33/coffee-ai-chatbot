@@ -45,13 +45,12 @@ export default function ChatWidget() {
     return () => clearInterval(timer);
   }, []);
 
-  // 判斷是否在服務時間內（工作日 12:00–20:00）
+  // 判斷是否在服務時間內（每日 12:00–20:00）
   const isWithinServiceHours = (() => {
-    const day = now.getDay(); // 0=Sun, 6=Sat
     const hour = now.getHours();
     const minute = now.getMinutes();
     const totalMinutes = hour * 60 + minute;
-    return day >= 1 && day <= 5 && totalMinutes >= 12 * 60 && totalMinutes < 20 * 60;
+    return totalMinutes >= 12 * 60 && totalMinutes < 20 * 60;
   })();
 
   const timeStr = now.toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit", hour12: false });
@@ -252,7 +251,7 @@ export default function ChatWidget() {
                 {QUICK_QUESTIONS.map((q) => (
                   <button
                     key={q}
-                    onClick={() => sendMessage(q)}
+                    onClick={() => q === "我要轉接真人客服" ? handleHandoff() : sendMessage(q)}
                     className="text-xs px-3 py-1.5 bg-white border border-neutral-200 text-neutral-700 rounded-full hover:bg-neutral-50 hover:border-neutral-300 transition-colors"
                   >
                     {q}
