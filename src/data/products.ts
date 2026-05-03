@@ -5,14 +5,14 @@ export const products = [
     category: "全自動咖啡機",
     price: 28900,
     originalPrice: 32900,
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop",
+    image: "https://shoplineimg.com/6363392481b55a004549a9a2/656ed0dd2d3e320023857976/800x.jpg?",
     badge: "熱銷款",
     rating: 4.8,
     reviews: 342,
     features: ["21 bar義式萃取壓力", "內建磨豆機", "蒸氣棒奶泡", "15秒快速加熱", "觸控螢幕"],
     description: "專業級義式咖啡機，一機掌控從磨豆到拉花的全流程",
     tags: ["全自動", "義式", "磨豆機", "蒸氣棒"],
-    url: "https://example.com/products/barista-pro-x1"
+    url: "https://www.nespresso.com/tw/zh/order/machines/vertuo/vertuo-pop-acquisition-lilac"
   },
   {
     id: "P002",
@@ -20,14 +20,14 @@ export const products = [
     category: "滴漏咖啡機",
     price: 8990,
     originalPrice: 9990,
-    image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop",
+    image: "https://img3.momoshop.com.tw/expertimg/0007/687/938/mobile/CMH-7570_EC.jpg?t=1668586279112",
     badge: "新品",
     rating: 4.6,
     reviews: 128,
     features: ["精準水溫控制 92-96°C", "黃金萃取時間設定", "保溫板設計", "定時預約功能", "10杯容量"],
     description: "符合 SCA 黃金標準的滴漏咖啡機，讓每一杯手沖風味完美重現",
     tags: ["滴漏", "手沖風味", "預約", "SCA標準"],
-    url: "https://example.com/products/drip-master-s3"
+    url: "https://www.nespresso.com/tw/zh/order/machines/vertuo/vertuo-pop-acquisition-lilac"
   },
   {
     id: "P003",
@@ -35,14 +35,14 @@ export const products = [
     category: "膠囊咖啡機",
     price: 5490,
     originalPrice: 6490,
-    image: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&h=300&fit=crop",
+    image: "https://tshop.r10s.com/d78/20a/b98b/2b8b/d0f0/ce8e/3748/1119edab970242ac110002.jpg?_ex=486x486",
     badge: "超值",
     rating: 4.4,
     reviews: 856,
     features: ["19 bar壓力萃取", "相容多品牌膠囊", "超薄機身15cm寬", "靜音馬達", "水箱可拆洗"],
     description: "極致簡約的廚房美學，兼容市售主流膠囊，三十秒快速出杯",
     tags: ["膠囊", "輕薄", "速成", "多品牌兼容"],
-    url: "https://example.com/products/capsule-slim-c2"
+    url: "https://www.nespresso.com/tw/zh/order/machines/vertuo/vertuo-pop-acquisition-lilac"
   },
   {
     id: "P004",
@@ -50,14 +50,14 @@ export const products = [
     category: "冷萃咖啡器",
     price: 12800,
     originalPrice: 14800,
-    image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=300&fit=crop",
+    image: "https://www.thermos-eshop.com/Content/upload/Products/202507230930583418.jpg",
     badge: "限量",
     rating: 4.9,
     reviews: 67,
     features: ["荷蘭式冷萃滴漏", "玻璃全透明設計", "流速精準調節", "附收納木架", "1.2L容量"],
     description: "展示級冷萃塔，讓時間為你萃取最純淨的咖啡精華",
     tags: ["冷萃", "展示", "荷蘭式", "精品"],
-    url: "https://example.com/products/cold-brew-tower-t1"
+    url: "https://www.nespresso.com/tw/zh/order/machines/vertuo/vertuo-pop-acquisition-lilac"
   },
   {
     id: "P005",
@@ -65,14 +65,14 @@ export const products = [
     category: "磨豆機",
     price: 15900,
     originalPrice: 18000,
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop",
+    image: "https://www.costco.com.tw/medias/sys_master/images/hb5/h4a/63485114122270.jpg",
     badge: "專業",
     rating: 4.7,
     reviews: 234,
     features: ["64mm平刀刀盤", "40段研磨粗細調整", "低轉速低靜電", "0.1g精準定量", "LCD顯示"],
     description: "專業咖啡師愛用，64mm商用等級刀盤帶來均勻一致的研磨粒徑",
     tags: ["磨豆機", "平刀", "專業", "64mm"],
-    url: "https://example.com/products/grinder-pro-g5"
+    url: "https://www.nespresso.com/tw/zh/order/machines/vertuo/vertuo-pop-acquisition-lilac"
   },
   {
     id: "P006",
@@ -80,14 +80,14 @@ export const products = [
     category: "奶泡器",
     price: 2490,
     originalPrice: 2990,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+    image: "https://cdn.cybassets.com/media/W1siZiIsIjE3NTI5L3Byb2R1Y3RzLzUxMTc3NDg5LzE3MzE2NTEyMzBfZjU4NDI1NjIwOThmZGE5YjkxNGIuanBlZyJdLFsicCIsInRodW1iIiwiNjAweDYwMCJdXQ.jpeg?sha=45a4a0818129ee64",
     badge: "入門首選",
     rating: 4.3,
     reviews: 1203,
     features: ["自動溫度感測", "冷熱奶泡雙模式", "旋轉螺旋打發", "304不鏽鋼", "USB充電"],
     description: "無線設計、快速打發，在家輕鬆複製咖啡廳層次奶泡",
     tags: ["奶泡器", "無線", "入門", "拉花"],
-    url: "https://example.com/products/latte-art-wand-w1"
+    url: "https://www.nespresso.com/tw/zh/order/machines/vertuo/vertuo-pop-acquisition-lilac"
   }
 ];
 
