@@ -5,7 +5,7 @@ export default function Home() {
     <main className="min-h-screen bg-neutral-50">
 
       {/* ── Nav ── */}
-      <nav className="bg-black text-white px-10 md:px-20 py-6 flex items-center justify-between">
+      <nav className="bg-amber-80 text-white px-10 md:px-20 py-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="text-3xl">☕</span>
           <span className="font-display text-2xl font-semibold tracking-tight text-white">
@@ -25,7 +25,7 @@ export default function Home() {
       </nav>
 
       {/* ── Hero ── */}
-      <div className="relative bg-amber-300 text-white overflow-hidden" style={{ minHeight: "85vh" }}>
+      <div className="relative bg-amber-800 text-white overflow-hidden" style={{ minHeight: "85vh" }}>
         {/* subtle grid texture */}
         <div
           className="absolute inset-0 opacity-[0.04]"
