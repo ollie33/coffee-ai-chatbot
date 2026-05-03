@@ -100,6 +100,15 @@ export default function ChatWidget() {
   };
 
   const handleHandoff = () => {
+    // 判斷是否在服務時間內（每日 12:00–20:00）
+    if (!isWithinServiceHours) {
+      setMessages((prev) => [...prev, {
+        id: Date.now().toString(),
+        role: "assistant",
+        content: `目前客服服務時間為每日 12:00–20:00，現在是 ${timeStr}，暫時無法轉接真人。\n\n您可以先輸入問題，我不會不見的！☕`,
+      }]);
+      return;
+    }
     setIsHandoff(true);
     setMessages((prev) => [...prev, {
       id: Date.now().toString(),
@@ -152,7 +161,7 @@ export default function ChatWidget() {
               <div>
                 <h3 className="font-semibold text-sm">智能客服-咖比</h3>
                 <p className="text-xs text-neutral-400">
-                  {isHandoff ? "等待轉接中..." : isWithinServiceHours ? "目前在線為您服務" : "目前非服務時間"}
+                  {isHandoff ? "等待轉接中..." : "目前在線為您服務"}
                 </p>
               </div>
             </div>
@@ -249,12 +258,7 @@ export default function ChatWidget() {
                     {q}
                   </button>
                 ))}
-                <button
-                  onClick={showAllProducts}
-                  className="text-xs px-3 py-1.5 bg-neutral-900 text-white border border-neutral-700 rounded-full hover:bg-black transition-colors"
-                >
-                  查看全部商品
-                </button>
+
               </div>
             </div>
           )}
