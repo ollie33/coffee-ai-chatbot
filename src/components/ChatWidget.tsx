@@ -63,14 +63,23 @@ export default function ChatWidget() {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 300);
   }, [isOpen]);
 
-  const HANDOFF_KEYWORDS = ["真人", "人工", "轉接", "真人客服", "人工客服", "客服人員", "真人服務"];
+  // 明確的轉接意圖短語（需夠長，避免誤觸）
+  const HANDOFF_PHRASES = [
+    "我要轉接", "轉接真人", "轉真人", "要真人", "找真人",
+    "轉接客服", "真人客服", "人工客服", "客服人員", "找客服",
+    "連接真人", "要找人", "真人服務",
+  ];
+  // 排除詞：含這些詞代表使用者在「詢問」，不是要求轉接
+  const HANDOFF_EXCLUSIONS = ["時間", "幾點", "營業", "何時", "什麼時候", "多久", "多長", "開放", "上班"];
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading || isHandoff) return;
     const trimmed = text.trim();
 
-    // 前端直接偵測轉接關鍵字，不依賴 AI 回傳 HANDOFF_TRIGGER
-    if (HANDOFF_KEYWORDS.some((kw) => trimmed.includes(kw))) {
+    // 前端偵測轉接意圖：有明確短語 且 不含排除詞
+    const hasHandoffIntent = HANDOFF_PHRASES.some((p) => trimmed.includes(p));
+    const isInfoQuery = HANDOFF_EXCLUSIONS.some((w) => trimmed.includes(w));
+    if (hasHandoffIntent && !isInfoQuery) {
       setMessages((prev) => [...prev, { id: Date.now().toString(), role: "user", content: trimmed }]);
       setInput("");
       handleHandoff();
