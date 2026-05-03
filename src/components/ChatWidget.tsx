@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Bot, Loader2, Headphones, User } from "lucide-react";
+import { MessageCircle, X, Send, Bot, Loader2, User } from "lucide-react";
 import { products } from "@/data/products";
 
 interface Message {
@@ -24,6 +24,9 @@ const QUICK_QUESTIONS = [
   "保固多久？可以退換嗎？",
   "我要轉接真人客服",
 ];
+
+// 查看全部商品的特殊指令
+const SHOW_ALL_CMD = "查看全部商品";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -114,6 +117,20 @@ export default function ChatWidget() {
     }]);
   };
 
+  // 当客戶點擊「查看全部商品」時，直接在對話中顯示所有商品卡片（不經 AI）
+  const showAllProducts = () => {
+    if (isLoading || isHandoff) return;
+    const userMsg: Message = { id: Date.now().toString(), role: "user", content: SHOW_ALL_CMD };
+    const allIds = products.map((p) => p.id);
+    const aiMsg: Message = {
+      id: (Date.now() + 1).toString(),
+      role: "assistant",
+      content: "以下是我們目前所有的商品，點擊各卡片可了解詳情和對比 ☕",
+      productIds: allIds,
+    };
+    setMessages((prev) => [...prev, userMsg, aiMsg]);
+  };
+
   return (
     <>
       {/* 懸浮按鈕 */}
@@ -139,25 +156,7 @@ export default function ChatWidget() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-neutral-500">{timeStr}</span>
-              {!isHandoff && (
-                isWithinServiceHours ? (
-                  <button
-                    onClick={handleHandoff}
-                    className="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full flex items-center gap-1 transition-colors"
-                  >
-                    <Headphones className="w-3 h-3" />
-                    轉接專人
-                  </button>
-                ) : (
-                  <div className="text-xs bg-white/10 px-3 py-1.5 rounded-full flex items-center gap-1 text-neutral-500 cursor-not-allowed" title="服務時間：工作日 12:00–20:00">
-                    <Headphones className="w-3 h-3" />
-                    非服務時間
-                  </div>
-                )
-              )}
-            </div>
+            <span className="text-xs text-neutral-500">{timeStr}</span>
           </div>
 
           {/* Messages */}
@@ -174,12 +173,12 @@ export default function ChatWidget() {
                       <span className="text-[10px] text-neutral-400 whitespace-nowrap">咖比</span>
                     </div>
                   )}
-                  <div className={`max-w-[85%] rounded-2xl px-5 py-4 text-sm whitespace-pre-line leading-relaxed ${
+                  <div className={`max-w-[85%] rounded-2xl px-5 py-4 text-sm leading-relaxed ${
                     m.role === "user"
-                      ? "bg-black text-white rounded-br-none"
+                      ? "bg-black text-white rounded-br-none whitespace-pre-line"
                       : "bg-white border border-neutral-200 text-neutral-800 rounded-bl-none shadow-sm"
                   }`}>
-                    {m.content}
+                    {m.role === "user" ? m.content : <MarkdownMessage content={m.content} />}
                   </div>
                   {m.role === "user" && (
                     <div className="w-7 h-7 rounded-full bg-neutral-200 flex items-center justify-center shrink-0">
@@ -199,18 +198,6 @@ export default function ChatWidget() {
                   </div>
                 )}
 
-                {/* 轉接 CTA */}
-                {m.shouldHandoff && !isHandoff && (
-                  <div className="pl-8">
-                    <button
-                      onClick={handleHandoff}
-                      className="text-xs flex items-center gap-1.5 bg-black text-white px-3 py-1.5 rounded-full hover:bg-neutral-800 transition-colors"
-                    >
-                      <Headphones className="w-3 h-3" />
-                      立即轉接真人
-                    </button>
-                  </div>
-                )}
               </div>
             ))}
 
@@ -262,6 +249,12 @@ export default function ChatWidget() {
                     {q}
                   </button>
                 ))}
+                <button
+                  onClick={showAllProducts}
+                  className="text-xs px-3 py-1.5 bg-neutral-900 text-white border border-neutral-700 rounded-full hover:bg-black transition-colors"
+                >
+                  查看全部商品
+                </button>
               </div>
             </div>
           )}
@@ -333,4 +326,74 @@ function ProductCard({ product }: { product: (typeof products)[0] }) {
       </div>
     </div>
   );
+}
+
+/* ── Markdown Message Renderer ── */
+function renderInline(text: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={i} className="font-semibold">{part.slice(2, -2)}</strong>;
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
+function MarkdownMessage({ content }: { content: string }) {
+  const lines = content.split("\n");
+  const nodes: React.ReactNode[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // 有序列表 "1. text"
+    if (/^\d+\.\s/.test(line)) {
+      const items: React.ReactNode[] = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        const text = lines[i].replace(/^\d+\.\s+/, "");
+        items.push(<li key={i}>{renderInline(text)}</li>);
+        i++;
+      }
+      nodes.push(
+        <ol key={`ol-${i}`} className="list-decimal pl-5 space-y-1 my-1.5">
+          {items}
+        </ol>
+      );
+      continue;
+    }
+
+    // 無序列表 "- text" 或 "* text"
+    if (/^[-*]\s/.test(line)) {
+      const items: React.ReactNode[] = [];
+      while (i < lines.length && /^[-*]\s/.test(lines[i])) {
+        const text = lines[i].replace(/^[-*]\s+/, "");
+        items.push(<li key={i}>{renderInline(text)}</li>);
+        i++;
+      }
+      nodes.push(
+        <ul key={`ul-${i}`} className="list-disc pl-5 space-y-1 my-1.5">
+          {items}
+        </ul>
+      );
+      continue;
+    }
+
+    // 空行
+    if (line.trim() === "") {
+      nodes.push(<div key={`gap-${i}`} className="h-1" />);
+      i++;
+      continue;
+    }
+
+    // 一般段落
+    nodes.push(
+      <p key={`p-${i}`} className="leading-relaxed">
+        {renderInline(line)}
+      </p>
+    );
+    i++;
+  }
+
+  return <div className="space-y-1">{nodes}</div>;
 }

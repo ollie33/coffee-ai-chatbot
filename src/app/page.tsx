@@ -37,9 +37,6 @@ export default function Home() {
         />
 
         <div className="relative z-10 flex flex-col items-center justify-center text-center px-10 py-40">
-          <span className="inline-block text-sm tracking-widest uppercase text-neutral-500 mb-8 border border-neutral-800 px-6 py-2 rounded-full">
-            AI 智慧客服體驗
-          </span>
 
           <h1 className="font-display text-6xl md:text-8xl font-bold mb-8 leading-[1.08]">
             每一杯，
