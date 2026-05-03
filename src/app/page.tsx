@@ -25,7 +25,7 @@ export default function Home() {
       </nav>
 
       {/* ── Hero ── */}
-      <div className="relative bg-black text-white overflow-hidden" style={{ minHeight: "85vh" }}>
+      <div className="relative bg-amber-300 text-white overflow-hidden" style={{ minHeight: "85vh" }}>
         {/* subtle grid texture */}
         <div
           className="absolute inset-0 opacity-[0.04]"
