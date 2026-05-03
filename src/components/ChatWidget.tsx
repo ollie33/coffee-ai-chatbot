@@ -63,9 +63,21 @@ export default function ChatWidget() {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 300);
   }, [isOpen]);
 
+  const HANDOFF_KEYWORDS = ["真人", "人工", "轉接", "真人客服", "人工客服", "客服人員", "真人服務"];
+
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading || isHandoff) return;
-    const userMsg: Message = { id: Date.now().toString(), role: "user", content: text.trim() };
+    const trimmed = text.trim();
+
+    // 前端直接偵測轉接關鍵字，不依賴 AI 回傳 HANDOFF_TRIGGER
+    if (HANDOFF_KEYWORDS.some((kw) => trimmed.includes(kw))) {
+      setMessages((prev) => [...prev, { id: Date.now().toString(), role: "user", content: trimmed }]);
+      setInput("");
+      handleHandoff();
+      return;
+    }
+
+    const userMsg: Message = { id: Date.now().toString(), role: "user", content: trimmed };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsLoading(true);
