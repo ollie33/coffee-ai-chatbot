@@ -12,16 +12,6 @@ export default function Home() {
             BrewCraft
           </span>
         </div>
-        <div className="flex items-center gap-8">
-          {["商品", "關於我們", "門市"].map((item) => (
-            <span
-              key={item}
-              className="text-lg text-neutral-400 hover:text-white cursor-pointer transition-colors"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
       </nav>
 
       {/* ── Hero ── */}
