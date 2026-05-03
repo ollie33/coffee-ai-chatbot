@@ -22,10 +22,10 @@ export default function Home() {
           <h1 className="font-display text-6xl md:text-8xl font-bold mb-8 leading-[1.08]">
             每一杯，
             <br />
-            <span className="text-neutral-400">都值得完美</span>
+            <span className="text-white/80">都值得完美</span>
           </h1>
 
-          <p className="text-neutral-400 text-xl md:text-2xl max-w-2xl leading-relaxed">
+          <p className="text-white/70 text-xl md:text-2xl max-w-2xl leading-relaxed">
             讓智能顧問幫你找到最適合的咖啡機，
             <br />
             從選購到保養，一鍵搞定

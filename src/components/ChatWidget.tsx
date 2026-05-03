@@ -180,12 +180,12 @@ export default function ChatWidget() {
               <Bot className="w-5 h-5" />
               <div>
                 <h3 className="font-semibold text-sm">智能客服-咖比</h3>
-                <p className="text-xs text-neutral-400">
+                <p className="text-xs text-white/70">
                   {isHandoff ? "等待轉接中..." : "目前在線為您服務"}
                 </p>
               </div>
             </div>
-            <span className="text-xs text-neutral-500">{timeStr}</span>
+            <span className="text-xs text-white/60">{timeStr}</span>
           </div>
 
           {/* Messages */}
@@ -199,7 +199,7 @@ export default function ChatWidget() {
                       <div className="w-7 h-7 rounded-full bg-amber-950 flex items-center justify-center">
                         <Bot className="w-3.5 h-3.5 text-white" />
                       </div>
-                      <span className="text-[10px] text-neutral-400 whitespace-nowrap">咖比</span>
+                      <span className="text-[10px] text-white/60 whitespace-nowrap">咖比</span>
                     </div>
                   )}
                   <div className={`max-w-[85%] rounded-2xl px-5 py-4 text-sm leading-relaxed ${
