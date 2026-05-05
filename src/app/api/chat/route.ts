@@ -40,6 +40,8 @@ PRODUCT_CARD:P001
 export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json();
+    // 只保留最近 4 輪對話（共 8 則訊息），System Prompt 永遠完整保留
+    const recentMessages = messages.slice(-8);
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -52,7 +54,7 @@ export async function POST(req: NextRequest) {
         max_tokens: 1024,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
-          ...messages.map((m: { role: string; content: string }) => ({
+          ... recentMessages.map((m: { role: string; content: string }) => ({
             role: m.role,
             content: m.content,
           })),
